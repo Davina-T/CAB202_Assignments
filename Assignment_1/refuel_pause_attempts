@@ -1,0 +1,82 @@
+
+
+void fuel_refill_collision (void) {
+	// find x and y coordinates of car and fuel
+	int car_y = round(sprite_y(car));
+	int car_x = round(sprite_x(car));
+	int fuel_y = round(sprite_y(fuel));
+	int fuel_x = round(sprite_x(fuel));
+
+	// if the car is in the refill boundary and speed is 0 (car parked)
+	if (car_y == fuel_y) {	
+		if (((car_x - 1) == (fuel_x + FUEL_WIDTH)) && (current_speed = 0)) {	
+			
+			// take the time of the collision
+			int pause_time = (seconds + (milliseconds / 100));
+			
+			// if the time has advanced 3 seconds, refill fuel 
+			// change the speed from 0 to 1
+			// move the car off the boundary
+			if (pause_time == ((seconds + milliseconds / 100) - 3)) {
+				fuel_remaining = 100;
+				sprite_move_to(car, (car_x - 1), 0);
+				current_speed = 1;
+			}
+		} 
+
+
+
+
+void fuel_refill_collision (void) {
+	// find x and y coordinates of car and fuel
+	int car_y = round(sprite_y(car));
+	int car_x = round(sprite_x(car));
+	int fuel_y = round(sprite_y(fuel));
+	int fuel_x = round(sprite_x(fuel));
+	int pause_milliseconds = 0;
+	int pause_seconds = 0;
+
+	// if the car is in the refill boundary and speed is 0 (car parked)
+	if (car_y == fuel_y) {	
+		if (((car_x - 1) == (fuel_x + FUEL_WIDTH)) && (current_speed = 0)) {	
+			
+			// every second the car is in boundary increase timer by 1
+			if ( timer_expired(game_timer) ) {
+				timer_reset(game_timer);
+				pause_milliseconds++;
+			}
+			if (pause_milliseconds >= 100) {
+				pause_seconds++;
+				pause_milliseconds = 0;
+			}
+
+			// if the time has advanced 3 seconds, refill fuel 
+			// change the speed from 0 to 1
+			// move the car off the boundary
+			if (pause_seconds == 3) {
+				fuel_remaining = 100;
+				sprite_move_to(car, (car_x - 1), 0);
+				current_speed = 1;
+			}
+		}
+		
+		if (((car_x + CAR_WIDTH) == (fuel_x - 1)) && (current_speed = 0)) {
+				
+			if ( timer_expired(game_timer) ) {
+				timer_reset(game_timer);
+				pause_milliseconds++;
+			}
+		
+			if (pause_milliseconds >= 100) {
+				pause_seconds++;
+				pause_milliseconds = 0;
+			}
+				
+			if (pause_seconds == 3) {
+				fuel_remaining = 100;
+				sprite_move_to(car, (car_x + 1), 0);
+				current_speed = 1;
+			}
+		}
+	}
+} // end fuel_refill_collision
