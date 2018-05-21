@@ -1,0 +1,1 @@
+gcc race_to_zombie_mountain.c -o race_to_zombie_mountain -I../ZDK -L../ZDK -lzdk -lncurses
