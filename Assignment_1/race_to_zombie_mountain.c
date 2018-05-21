@@ -122,6 +122,7 @@ bool car_safe_spot (void);
 
 void do_game_over (void);
 void time_reset (void);
+void pause (void);
 
 // Game state
 bool game_over = false; /* Set true when game is over */
@@ -140,7 +141,7 @@ char * splash_screen_image =
 /**/    "     Use the up and down keys to change the speed of the car.     "
 /**/	"                                                                  "
 /**/	"     Collect fuel by driving next to a depot while on the road.   "
-/**/	"     Stay alive until you reach Zombie Mountain to win the game!  "        
+/**/	"                     Press 'p' to pause.                          "        
 /**/	"                                                                  "
 /**/	"                 Press any key to continue...                     ";
 
@@ -257,6 +258,20 @@ void splash_screen (void) {
 	new_game = false;
 } // end splash_screen
 
+void pause (void) {
+	clear_screen();
+	draw_formatted(screen_width() / 2 - 6, screen_height() / 2 - 9,
+			"PAUSED");
+	draw_formatted(screen_width() / 2 - 10, screen_height() / 2 - 5, 
+			" Time = %02i:%02i:%02i", minutes, seconds, milliseconds);
+	draw_formatted(screen_width() / 2 - 12, screen_height() / 2 - 4,
+			"Distance travelled: %0.0lf", distance_travelled);
+	draw_formatted(screen_width() / 2 - 14, screen_height() / 2,
+			"Press any key to continue...");
+	show_screen();
+	wait_char();
+} // end pause
+
 // Function to play the game
 void process (void) {
 	
@@ -267,6 +282,11 @@ void process (void) {
 		game_over = true;
 		wait_char();
 		return;
+	}
+	
+	/* Implement a pause function */
+	if (key == 'p') {
+		pause();
 	}
 
 	update_car(key); // takes what key is pressed into the function
@@ -979,7 +999,7 @@ void do_game_over (void) {
 			draw_formatted(screen_width() / 2 - 6, screen_height() / 2 - 10, "YOU WON!");
 		}
 		
-		draw_formatted(screen_width() / 2 - 12, screen_height() / 2 - 5, 
+		draw_formatted(screen_width() / 2 - 10, screen_height() / 2 - 5, 
 					   " Time = %02i:%02i:%02i", minutes, seconds, milliseconds);
 		draw_formatted(screen_width() / 2 - 12, screen_height() / 2 - 4,
 					   "Distance travelled: %0.0lf", distance_travelled);
